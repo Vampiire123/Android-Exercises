@@ -20,12 +20,12 @@ public class GetSharedLinkTest {
 
     @Test
     public void shouldReturnAMockedValueForAGivenSynchronousCall(){
-        givenAllStringsMocked();
+        givenThereIsAShareLink();
 
-        assertEquals(mockGetSharedLink.getLink(), "link");
+        assertEquals(mockGetSharedLink.getLink(), "http://www.link.com/");
     }
 
-    private void givenAllStringsMocked(){
-        when(mockGetSharedLink.getLink()).thenReturn("link");
+    private void givenThereIsAShareLink(){
+        when(mockGetSharedLink.getLink()).thenReturn("http://www.link.com/");
     }
 }
