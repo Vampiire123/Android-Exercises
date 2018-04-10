@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GetSharedLinkTest {
 
@@ -14,18 +14,18 @@ public class GetSharedLinkTest {
     GetSharedLink mockGetSharedLink;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void shouldReturnAMockedValueForAGivenSynchronousCall(){
+    public void shouldReturnAMockedValueForAGivenSynchronousCall() {
         givenThereIsAShareLink();
 
         assertEquals(mockGetSharedLink.getLink(), "http://www.link.com/");
     }
 
-    private void givenThereIsAShareLink(){
+    private void givenThereIsAShareLink() {
         when(mockGetSharedLink.getLink()).thenReturn("http://www.link.com/");
     }
 }
