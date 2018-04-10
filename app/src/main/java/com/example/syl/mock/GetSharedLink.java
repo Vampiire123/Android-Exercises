@@ -6,7 +6,7 @@ public interface GetSharedLink {
     String getLink();
     void getLinkAsync(Listener listener);
 
-    interface Listener{
+    interface Listener {
         void onSuccess(String link);
         void onFailure(AbsError e);
     }
