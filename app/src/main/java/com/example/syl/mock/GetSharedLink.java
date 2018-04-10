@@ -1,9 +1,10 @@
 package com.example.syl.mock;
 
-import android.net.sip.SipSession;
+import com.example.syl.mock.model.AbsError;
 
 public interface GetSharedLink {
-    void getLinkAsynk(SipSession.Listener listener);
+    String getLink();
+    void getLinkAsync(Listener listener);
 
     interface Listener{
         void onSuccess(String link);
