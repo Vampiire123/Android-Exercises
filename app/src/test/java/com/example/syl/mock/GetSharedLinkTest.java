@@ -5,6 +5,7 @@ import com.example.syl.mock.model.AppError;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.matchers.Any;
@@ -39,27 +40,35 @@ public class GetSharedLinkTest {
 
     @Test
     public void shouldReturnAMockedValueForAGivenASynchronousCallOnSuccess(){
-        givenAMockedGetSharedLinkListenerOnSuccess();
+        givenAMockedInstanceThatReturnsSuccess();
 
         mockGetSharedLink.getLinkAsync(mockGetSharedLinkListener);
 
-        verify(mockGetSharedLinkListener).onSuccess("http://www.link.com/"); //captor.capture()
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        verify(mockGetSharedLinkListener).onSuccess(captor.capture());
+
+        assertEquals("http://www.link.com/", captor.getValue());
     }
 
     @Test
     public void shouldReturnAMockedValueForAGivenASynchronousCallOnFailure(){
-        givenAMockedGetSharedLinkListenerOnFailure();
+        givenAMockedInstanceThatReturnsFailure();
 
         mockGetSharedLink.getLinkAsync(mockGetSharedLinkListener);
 
-        verify(mockGetSharedLinkListener).onFailure(new AppError("message"));
+        ArgumentCaptor<AppError> captor = ArgumentCaptor.forClass(AppError.class);
+
+        verify(mockGetSharedLinkListener).onFailure(captor.capture());
+
+        assertEquals("Could not create link", captor.getValue().message());
     }
 
     private void givenThereIsAShareLink(){
         when(mockGetSharedLink.getLink()).thenReturn("http://www.link.com/");
     }
 
-    private void givenAMockedGetSharedLinkListenerOnSuccess(){
+    private void givenAMockedInstanceThatReturnsSuccess(){
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
@@ -69,11 +78,11 @@ public class GetSharedLinkTest {
         }).when(mockGetSharedLink).getLinkAsync(any(GetSharedLink.Listener.class));
     }
 
-    private void givenAMockedGetSharedLinkListenerOnFailure(){
+    private void givenAMockedInstanceThatReturnsFailure(){
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                ((GetSharedLink.Listener) invocation.getArguments()[0]).onFailure(new AppError("message"));
+                ((GetSharedLink.Listener) invocation.getArguments()[0]).onFailure(new AppError("Could not create link"));
                 return null;
             }
         }).when(mockGetSharedLink).getLinkAsync(any(GetSharedLink.Listener.class));
